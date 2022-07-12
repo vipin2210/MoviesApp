@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { legacy_createStore } from 'redux';
 
+
 import './index.css';
 import App from './components/App';
-import movies from './reducers';
+import rootReducer from './reducers';
 
-const store = legacy_createStore(movies);
+
+const store = legacy_createStore(rootReducer);
 console.log('store', store);
 // console.log('Before state', store.getState());
 
@@ -21,6 +23,6 @@ console.log('store', store);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App store={store}/>
+    <App store={store} />
   </React.StrictMode>
 );
