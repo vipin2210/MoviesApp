@@ -1,13 +1,21 @@
 import { combineReducers } from "redux";
-import { ADD_MOVIES, ADD_TO_FAVOURITE, REMOVE_FROM_FAVOURITE, SET_SHOW_FAVOURITE } from "../actions";
+import {
+    ADD_MOVIES,
+    ADD_SEARCH_RESULT,
+    ADD_TO_FAVOURITE,
+    REMOVE_FROM_FAVOURITE,
+    SET_SHOW_FAVOURITE,
+    ADD_MOVIE_TO_LIST,
+} from "../actions";
 
 const initialMoviesState = {
     list: [],
-    favourites: []
+    favourites: [],
+    showFavourites: false
 };
 
 export function movies(state = initialMoviesState, action) {
-    console.log('MOVIES REDUCER'); 
+    console.log('MOVIES REDUCER');
     // if (action.type === ADD_MOVIES) {
     //     return {
     //         ...state,
@@ -40,6 +48,11 @@ export function movies(state = initialMoviesState, action) {
                 ...state,
                 showFavourites: action.val
             }
+        case ADD_MOVIE_TO_LIST:
+            return {
+                ...state,
+                list: [action.movie, ...state.list]
+            };
         default:
             return state;
     }
@@ -47,18 +60,33 @@ export function movies(state = initialMoviesState, action) {
 
 
 const initialSearchState = {
-    result: {}
+    result: {},
+    showSearchResults: false
 };
 
 export function search(state = initialSearchState, action) {
-    console.log('SEARCH REDUCER');
-    return state;
+    console.log("SEARCH REDUCER");
+    switch (action.type) {
+        case ADD_SEARCH_RESULT:
+            return {
+                ...state,
+                result: action.movie,
+                showSearchResults:true
+            };
+            case ADD_MOVIE_TO_LIST:
+            return {
+                ...state,
+               showSearchResults:false,
+            };
+        default:
+            return state;
+    }
 }
 
-const initialRootState = {
-    movies: initialMoviesState,
-    search: initialSearchState
-};
+// const initialRootState = {
+//     movies: initialMoviesState,
+//     search: initialSearchState
+// };
 
 // export default function rootReducer(state = initialRootState, action) {
 //     return {
@@ -68,6 +96,6 @@ const initialRootState = {
 // }
 
 export default combineReducers({
-movies,
-search
+    movies,
+    search
 });
