@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { legacy_createStore,applyMiddleware } from 'redux';
+import { legacy_createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 import './index.css';
 import App from './components/App';
 import combineReducers from './reducers';
+import { createContext } from 'react';
 
 //function logger(obj,next,action)
 //logger(obj)(next)(action)
@@ -19,12 +20,12 @@ import combineReducers from './reducers';
 //   }
 // }
 
-const logger=({dispatch,getState})=>(next)=>(action)=>{
+const logger = ({ dispatch, getState }) => (next) => (action) => {
   //logger code
- if(typeof action !=='function'){
-   console.log('ACTION_TYPE = ',action.type);
- } 
-next(action);
+  if (typeof action !== 'function') {
+    console.log('ACTION_TYPE = ', action.type);
+  }
+  next(action);
 }
 
 
@@ -39,8 +40,22 @@ next(action);
 //   next(action);
 // }
 
-const store = legacy_createStore(combineReducers,applyMiddleware(thunk));
+const store = legacy_createStore(combineReducers, applyMiddleware(thunk));
 console.log('store', store);
+
+export const StoreContext = createContext();
+
+class Provider extends React.Component {
+  render() {
+    const { store } = this.props;
+    return (<StoreContext.Provider value={store}>
+      {this.props.children}
+    </StoreContext.Provider>
+    );
+  }
+}
+
+
 // console.log('Before state', store.getState());
 
 // store.dispatch({
@@ -53,7 +68,8 @@ console.log('store', store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App store={store} />
-  </React.StrictMode>
+  <Provider store={store}>
+    <App />
+  </Provider>
+
 );
