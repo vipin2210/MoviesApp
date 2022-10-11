@@ -1,70 +1,69 @@
-import { render } from '@testing-library/react';
-import React from 'react';
-import { connect } from 'react-redux';
-import { addMovieSearchResult, addMovieToList, handleMovieSearch } from '../actions';
+import { render } from "@testing-library/react";
+import React from "react";
+import { connect } from "react-redux";
+import {
+  addMovieSearchResult,
+  addMovieToList,
+  handleMovieSearch,
+} from "../actions";
 // import {data} from "../data";
 //import { StoreContext } from '../index';
 
 class Navbar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            searchText: ''
-        };
-    }
-
-    handleAddToMovies = (movie) => {
-        this.props.dispatch(addMovieToList(movie));
-        // this.setState({
-        //     showSearchResults:false
-        // })
-    }
-
-    handleSearch = () => {
-        const { searchText } = this.state;
-
-        this.props.dispatch(handleMovieSearch(searchText));
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: "",
     };
+  }
 
-    handleChange = (e) => {
-        this.setState({
-            searchText: e.target.value
-        });
-    };
+  handleAddToMovies = (movie) => {
+    this.props.dispatch(addMovieToList(movie));
+    // this.setState({
+    //     showSearchResults:false
+    // })
+  };
 
-    render() {
-        const { result: movie, showSearchResults } = this.props.search;
-        return (
-            <div className="navbar">
-                <div className='search-container'>
+  handleSearch = () => {
+    const { searchText } = this.state;
 
-                    <input onChange={this.handleChange} />
-                    <button id='search-btn' onClick={this.handleSearch}>Search</button>
-                    {showSearchResults &&
-                        <div className='search-results'>
-                            <div className='search-result'>
-                                <img src={movie.Poster} alt='seach-pic' />
+    this.props.dispatch(handleMovieSearch(searchText));
+  };
 
-                                <div className='movie-info'>
-                                    <span>{movie.Title}</span>
-                                    <button onClick={() => this.handleAddToMovies(movie)}>
-                                        Add to Movies
-                                    </button>
+  handleChange = (e) => {
+    this.setState({
+      searchText: e.target.value,
+    });
+  };
 
-                                </div>
+  render() {
+    const { result: movie, showSearchResults } = this.props.search;
+    return (
+      <div className="navbar">
+        <img className="navbar-logo" src="/app-icon.png" />
+        <div className="search-container">
+          <input onChange={this.handleChange} />
+          <button id="search-btn" onClick={this.handleSearch}>
+            Search
+          </button>
+          {showSearchResults && (
+            <div className="search-results">
+              <div className="search-result">
+                <img src={movie.Poster} alt="seach-pic" />
 
-                            </div>
-
-                        </div>
-                    }
-
-
+                <div className="movie-info">
+                  <span>{movie.Title}</span>
+                  <button onClick={() => this.handleAddToMovies(movie)}>
+                    Add to Movies
+                  </button>
                 </div>
+              </div>
             </div>
-
-        );
-
-    }
+          )}
+        </div>
+      </div>
+    );
+  }
 }
 
 // class NavbarWapper extends React.Component{
@@ -78,10 +77,9 @@ class Navbar extends React.Component {
 // }
 
 function mapStateToProps({ search }) {
-    return {
-        search
-    }
+  return {
+    search,
+  };
 }
 
 export default connect(mapStateToProps)(Navbar);
-
